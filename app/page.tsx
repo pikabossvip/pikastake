@@ -16,9 +16,6 @@ import { Input } from "@/components/ui/input";
 import pikaLogo from "@/assets/images/pika.png";
 import { useAccount } from "wagmi";
 
-export const providerUrl =
-  "https://polygon-mumbai.g.alchemy.com/v2/eXVSeQbya0p9KiT3XDkB7DZ6fogMcuzF";
-
 export default function Home() {
   const [readContract, setReadContract] = useState<any>();
   const [writeContract, setWriteContract] = useState<any>();
