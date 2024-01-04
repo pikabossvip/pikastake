@@ -40,10 +40,10 @@ export default function Home() {
   }, [isConnected]);
 
   function handleStakeChange(e: any) {
-    setStakeAmount(parseFloat(e.target.value));
+    setStakeAmount(parseFloat(e.target.value) * 1e18);
   }
   function handleUnstakeChange(e: any) {
-    setUnstakeAmount(parseFloat(e.target.value));
+    setUnstakeAmount(parseFloat(e.target.value) * 1e18);
   }
 
   const loadWeb3 = async () => {
@@ -92,14 +92,18 @@ export default function Home() {
   };
 
   const stake = async () => {
-    if (walletBalance > 0 && allowance < walletBalance) {
-      await writePikaContract.approve(pikaContractAddress, walletBalance);
+    if (walletBalance > 0 && allowance < stakeAmount) {
+      await writePikaContract.approve(
+        stakingContractAddress,
+        ethers.MaxUint256
+        // BigInt(walletBalance)
+      );
     }
-    await writeContract.stake(stakeAmount);
+    await writeContract.stake(BigInt(stakeAmount));
   };
 
   const unstake = async () => {
-    await writeContract.unstake(unstakeAmount);
+    await writeContract.unstake(BigInt(unstakeAmount));
   };
 
   const restake = async () => {
@@ -110,17 +114,36 @@ export default function Home() {
     await writeContract.claim();
   };
 
+  const calculateApy = (apr: number) => {
+    const aprDecimal = apr / 100;
+    const apy = Math.exp(aprDecimal) - 1;
+    return apy;
+  };
+
   return (
     <div className="mt-12 sm:mt-24 flex flex-col items-center">
       <Image src={pikaLogo} alt={"pika_logo"} width={120} height={120} />
-      <h1 className="text-[40px] sm:text-[60px] font-chelsea mb-4">PIKA STAKING</h1>
+      <h1 className="text-[40px] sm:text-[60px] font-chelsea mb-4">
+        PIKA STAKING
+      </h1>
       {isConnected && (
         <div className="flex flex-col gap-4 bg-[#F8F4E2] rounded-md p-8 mb-8">
-          <div className="flex flex-col sm:flex-row justify-between pb-4 mb-4 border-b border-slate-400">
-            <p>$PIKA balance: {walletBalance}</p>
-            <p>APR: {apr}</p>
-            <p>Staked $PIKA: {stakedAmount}</p>
-            <p>Unclaimed: {unclaimed}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 pb-4 mb-4 border-b border-slate-400">
+            <p>
+              <b>Balance:</b> {walletBalance / 1e18} $PIKA
+            </p>
+            <p>
+              <b>APR:</b> {apr}%
+            </p>
+            {/* <p>
+              <b>APY:</b> {calculateApy(apr)}%
+            </p> */}
+            <p>
+              <b>Staked:</b> {stakedAmount / 1e18} $PIKA
+            </p>
+            <p>
+              <b>Unclaimed:</b> {unclaimed / 1e18} $PIKA
+            </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-12">
             <div className="flex flex-col gap-4 items-center">
