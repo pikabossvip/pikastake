@@ -106,6 +106,22 @@ export default function Home() {
     await writeContract.unstake(BigInt(unstakeAmount));
   };
 
+  const maxStake = async () => {
+    if (walletBalance > 0 && allowance < walletBalance) {
+      await writePikaContract.approve(
+        stakingContractAddress,
+        ethers.MaxUint256
+        // BigInt(walletBalance)
+      );
+    }
+    // await writeContract.stake(BigInt(Math.floor(walletBalance / 10)));
+    await writeContract.stake(BigInt(walletBalance));
+  };
+
+  const maxUnstake = async () => {
+    await writeContract.unstakeAll();
+  };
+
   const restake = async () => {
     await writeContract.restake();
   };
@@ -120,9 +136,20 @@ export default function Home() {
     return apy;
   };
 
+  const redirectToPikaWebsite = () => {
+    window.location.assign("https://pikaboss.vip");
+  };
+
   return (
     <div className="mt-12 sm:mt-24 flex flex-col items-center">
-      <Image src={pikaLogo} alt={"pika_logo"} width={120} height={120} />
+      <Image
+        src={pikaLogo}
+        alt={"pika_logo"}
+        width={120}
+        height={120}
+        onClick={redirectToPikaWebsite}
+        className="cursor-pointer"
+      />
       <h1 className="text-[40px] sm:text-[60px] font-chelsea mb-4">STAKING</h1>
       {isConnected && (
         <div className="flex flex-col gap-4 bg-[#F8F4E2] rounded-md p-8 mb-8">
@@ -145,12 +172,22 @@ export default function Home() {
           </div>
           <div className="flex flex-col sm:flex-row gap-16">
             <div className="flex flex-col gap-4 items-center">
-              <Input
-                type="number"
-                placeholder="Amount"
-                onChange={(e) => handleUnstakeChange(e)}
-                // defaultValue={userStake}
-              />
+              <div className="relative">
+                <Input
+                  type="number"
+                  placeholder="Amount"
+                  onChange={(e) => handleUnstakeChange(e)}
+                  // defaultValue={userStake}
+                />
+                <Button
+                  className="absolute top-2 right-2 rounded-full"
+                  variant="pika"
+                  size="sm"
+                  onClick={maxUnstake}
+                >
+                  Max
+                </Button>
+              </div>
               <Button
                 onClick={unstake}
                 disabled={unstakeAmount <= 0}
@@ -162,12 +199,22 @@ export default function Home() {
               </Button>
             </div>
             <div className="flex flex-col gap-4 items-center">
-              <Input
-                type="number"
-                placeholder="Amount"
-                onChange={(e) => handleStakeChange(e)}
-                // defaultValue={userStake}
-              />
+              <div className="relative">
+                <Input
+                  type="number"
+                  placeholder="Amount"
+                  onChange={(e) => handleStakeChange(e)}
+                  // defaultValue={userStake}
+                />
+                <Button
+                  className="absolute top-2 right-2 rounded-full"
+                  variant="pika"
+                  size="sm"
+                  onClick={maxStake}
+                >
+                  Max
+                </Button>
+              </div>
               <Button
                 onClick={stake}
                 disabled={stakeAmount <= 0}
@@ -179,11 +226,21 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="flex flex-col items-center justify-between">
-              <Button onClick={restake} variant="pika" size="pika">
+            <div className="flex flex-col items-center gap-12 sm:gap-8 w-full sm:w-fit">
+              <Button
+                onClick={restake}
+                variant="pika"
+                size="pika"
+                className="w-full sm:w-fit"
+              >
                 Restake
               </Button>
-              <Button onClick={claim} variant="pika" size="pika">
+              <Button
+                onClick={claim}
+                variant="pika"
+                size="pika"
+                className="w-full sm:w-fit"
+              >
                 Claim
               </Button>
             </div>
