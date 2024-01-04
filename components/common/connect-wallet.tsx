@@ -25,7 +25,7 @@ export default function ConnectWallet() {
     }
   }, [isConnected]);
   return (
-    <Button onClick={() => connect()} variant="pika" size="pika">
+    <Button onClick={() => connect()} variant="pika" size="pika" className="mb-20">
       {isConnected && address ? formatPublicAddress(address) : "Connect wallet"}
     </Button>
   );
