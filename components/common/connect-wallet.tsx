@@ -13,6 +13,7 @@ export default function ConnectWallet() {
   const { toast } = useToast();
   const { connect } = useConnect({
     connector: new InjectedConnector(),
+    chainId: 1,
   });
 
   useEffect(() => {
