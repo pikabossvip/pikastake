@@ -123,50 +123,31 @@ export default function Home() {
   return (
     <div className="mt-12 sm:mt-24 flex flex-col items-center">
       <Image src={pikaLogo} alt={"pika_logo"} width={120} height={120} />
-      <h1 className="text-[40px] sm:text-[60px] font-chelsea mb-4">
-        PIKA STAKING
-      </h1>
+      <h1 className="text-[40px] sm:text-[60px] font-chelsea mb-4">STAKING</h1>
       {isConnected && (
         <div className="flex flex-col gap-4 bg-[#F8F4E2] rounded-md p-8 mb-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 pb-4 mb-4 border-b border-slate-400">
             <p>
-              <b>Balance:</b> {walletBalance / 1e18} $PIKA
+              <b>Balance:</b> {(walletBalance / 1e18).toFixed(0)} PIKA
             </p>
             <p>
-              <b>APR:</b> {apr}%
+              <b>APR:</b> {apr.toFixed(0)}%
             </p>
             {/* <p>
               <b>APY:</b> {calculateApy(apr)}%
             </p> */}
             <p>
-              <b>Staked:</b> {stakedAmount / 1e18} $PIKA
+              <b>Staked:</b> {(stakedAmount / 1e18).toFixed(0)} PIKA
             </p>
             <p>
-              <b>Unclaimed:</b> {unclaimed / 1e18} $PIKA
+              <b>Unclaimed:</b> {(unclaimed / 1e18).toFixed(0)} PIKA
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-12">
+          <div className="flex flex-col sm:flex-row gap-16">
             <div className="flex flex-col gap-4 items-center">
               <Input
                 type="number"
-                placeholder="Stake amount"
-                onChange={(e) => handleStakeChange(e)}
-                // defaultValue={userStake}
-              />
-              <Button
-                onClick={stake}
-                disabled={stakeAmount <= 0}
-                variant="pika"
-                size="pika"
-                className="w-full sm:w-min"
-              >
-                Stake
-              </Button>
-            </div>
-            <div className="flex flex-col gap-4 items-center">
-              <Input
-                type="number"
-                placeholder="Unstake amount"
+                placeholder="Amount"
                 onChange={(e) => handleUnstakeChange(e)}
                 // defaultValue={userStake}
               />
@@ -180,12 +161,32 @@ export default function Home() {
                 Unstake
               </Button>
             </div>
-            <Button onClick={restake} variant="pika" size="pika">
-              Restake
-            </Button>
-            <Button onClick={claim} variant="pika" size="pika">
-              Claim
-            </Button>
+            <div className="flex flex-col gap-4 items-center">
+              <Input
+                type="number"
+                placeholder="Amount"
+                onChange={(e) => handleStakeChange(e)}
+                // defaultValue={userStake}
+              />
+              <Button
+                onClick={stake}
+                disabled={stakeAmount <= 0}
+                variant="pika"
+                size="pika"
+                className="w-full sm:w-min"
+              >
+                Stake
+              </Button>
+            </div>
+
+            <div className="flex flex-col items-center justify-between">
+              <Button onClick={restake} variant="pika" size="pika">
+                Restake
+              </Button>
+              <Button onClick={claim} variant="pika" size="pika">
+                Claim
+              </Button>
+            </div>
           </div>
         </div>
       )}
