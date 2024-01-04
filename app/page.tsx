@@ -36,7 +36,6 @@ export default function Home() {
   useEffect(() => {
     if (isConnected) {
       loadWeb3();
-      // getApr();
     }
   }, [isConnected]);
 
@@ -48,7 +47,6 @@ export default function Home() {
   }
 
   const loadWeb3 = async () => {
-    console.log("load web3");
     if ((window as any).ethereum == null) {
       toast({
         title: "No metamask",
@@ -113,9 +111,9 @@ export default function Home() {
   };
 
   return (
-    <div className="mt-24 flex flex-col items-center">
+    <div className="mt-12 sm:mt-24 flex flex-col items-center">
       <Image src={pikaLogo} alt={"pika_logo"} width={120} height={120} />
-      <h1 className="text-[60px] font-chelsea mb-4">PIKA STAKING</h1>
+      <h1 className="text-[40px] sm:text-[60px] font-chelsea mb-4">PIKA STAKING</h1>
       {isConnected && (
         <div className="flex flex-col gap-4 bg-[#F8F4E2] rounded-md p-8 mb-8">
           <div className="flex flex-col sm:flex-row justify-between pb-4 mb-4 border-b border-slate-400">
@@ -137,6 +135,7 @@ export default function Home() {
                 disabled={stakeAmount <= 0}
                 variant="pika"
                 size="pika"
+                className="w-full sm:w-min"
               >
                 Stake
               </Button>
@@ -153,6 +152,7 @@ export default function Home() {
                 disabled={unstakeAmount <= 0}
                 variant="pika"
                 size="pika"
+                className="w-full sm:w-min"
               >
                 Unstake
               </Button>
