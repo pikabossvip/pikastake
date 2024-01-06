@@ -98,6 +98,7 @@ export default function Home() {
         ethers.MaxUint256
         // BigInt(walletBalance)
       );
+      setAllowance(Number(ethers.MaxUint256));
     }
     await writeContract.stake(BigInt(stakeAmount));
   };
@@ -113,6 +114,7 @@ export default function Home() {
         ethers.MaxUint256
         // BigInt(walletBalance)
       );
+      setAllowance(Number(ethers.MaxUint256));
     }
     // await writeContract.stake(BigInt(Math.floor(walletBalance / 10)));
     await writeContract.stake(BigInt(walletBalance));
